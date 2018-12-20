@@ -14,14 +14,16 @@ public class TransactionConsumerImpl {
     ServerAPI serverAPI;
 
 
-    @Compensable(confirmMethod = "confirmSendMessage", cancelMethod = "cancelSendMessage", transactionContextEditor = DubboTransactionContextEditor.class)
+    @Compensable(confirmMethod = "confirmSendMessage", cancelMethod = "cancelSendMessage", asyncConfirm = true)
     @Transactional
     public String sendMessage(String message) {
         String str="-------quick start customer---"+message;
         System.out.println("this is customer sendMessage------"+message);
+        serverAPI.sendMessage(message);
         return str;
     }
 
+    @Transactional
     public String confirmSendMessage(String message) {
         String str="-------quick start provider---"+message;
         System.out.println("this is customer confirmSMessage------"+message);
@@ -29,9 +31,10 @@ public class TransactionConsumerImpl {
         return str;
     }
 
-    public String cancleSendMessage(String message) {
+    @Transactional
+    public String cancelSendMessage(String message) {
         System.out.println("this is customer cancleSendMessage------"+message);
 
-        return null;
+        return message;
     }
 }

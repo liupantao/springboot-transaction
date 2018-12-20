@@ -10,15 +10,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Service(interfaceClass = ServerAPI.class)
 public class TransactionStartImpl implements ServerAPI {
-   @Override
-   @Compensable(confirmMethod = "confirmSendMessage", cancelMethod = "cancelSendMessage", transactionContextEditor = DubboTransactionContextEditor.class)
-   @Transactional
+    @Override
+    @Transactional
+    @Compensable(confirmMethod = "confirmSendMessage", cancelMethod = "cancelSendMessage", transactionContextEditor = DubboTransactionContextEditor.class)
     public String sendMessage(String message) {
-        String str="-------quick start provider---"+message;
-        System.out.println("this is sendMessage------"+message);
-        return str;
+        System.out.println("this is sendMessage try message="+message);
+        if(message.equals("123")){
+            throw new NullPointerException();
+        }
+
+        return "quickstart-provider-message="+message;
     }
 
+    @Transactional
     public String confirmSendMessage(String message) {
         String str="-------quick start provider---"+message;
         System.out.println("this is confirmSMessage------"+message);
@@ -26,9 +30,10 @@ public class TransactionStartImpl implements ServerAPI {
         return str;
     }
 
-    public String cancleSendMessage(String message) {
+    @Transactional
+    public String cancelSendMessage(String message) {
         System.out.println("this is cancleSendMessage------"+message);
 
-        return null;
+        return "989";
     }
 }

@@ -18,7 +18,8 @@ public class ConsumerApplication {
        // quickStartImpl.sendMessage("你好呀--dubbo");
 
         TransactionConsumerImpl transactionConsumerImpl = (TransactionConsumerImpl) run.getBean("transactionConsumerImpl");
-        transactionConsumerImpl.sendMessage("---------你好-分布式事务-transaction--");
+     //   transactionConsumerImpl.sendMessage("---------你好-分布式事务-transaction--");
+        transactionConsumerImpl.sendMessage("123");
     }
 
 }
